@@ -1,74 +1,23 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
-def create_graph(edges: list[tuple[int, int]]):
-    grafik = nx.Graph()
-    grafik.add_edges_from(edges)
-    print(grafik)
-    return grafik
+def create_graph(edges: list[tuple[int, int]]) -> nx.Graph:
+    G = nx.Graph()
+    G.add_edges_from(edges)
+    return G
 
-def get_degree(G: nx.graph, node: int):
-    degree = int(G.degree(node))
-    print(degree)
-    return degree
+def get_degree(G: nx.Graph, node: int) -> int:
+    return G.degree[node]
 
-def dfs_traversal(G: nx.graph, start: int):
-    hasil_pencarian = []
-    dikunjungi = set()
-    stack = [start]
+def dfs_traversal(G: nx.Graph, start: int) -> list[int]:
+    return list(nx.dfs_preorder_nodes(G, source=start))
 
-    while stack:
-        node = stack.pop()
-        if node not in dikunjungi:
-            dikunjungi.add(node)
-            hasil_pencarian.append(node)
-            for adj in reversed(list(G.neighbors(node))):
-                if adj not in dikunjungi:
-                    stack.append(adj)
-    for i in hasil_pencarian:
-        print(i, end=" ")
-    print()
-    return hasil_pencarian
+def bfs_traversal(G: nx.Graph, start: int) -> list[int]:
+    return list(nx.bfs_tree(G, source=start))
 
-def dfs_new(G: nx.graph, start: int):
-    dfs = list(nx.dfs_tree(G, start))
-    for i in dfs:
-        print(i, end=" ")
-    print()
-    return dfs
+def find_shortest_path(G: nx.Graph, source: int, target: int) -> list[int]:
+    return nx.shortest_path(G, source=source, target=target)
 
-def bfs_traversal(G: nx.graph, start: int):
-    hasil_pencarian = []
-    dikunjungi = set()
-    queue = [start]
-
-    while queue:
-        node = queue.pop(0)
-        if node not in dikunjungi:
-            dikunjungi.add(node)
-            hasil_pencarian.append(node)
-            for adj in G.neighbors(node):
-                if adj not in dikunjungi:
-                    queue.append(adj)
-    for i in hasil_pencarian:
-        print(i, end=" ")
-    print()
-    return hasil_pencarian
-
-def bfs_new(G: nx.graph, start: int):
-    bfs = list(nx.bfs_tree(G, start))
-    for i in bfs:
-        print(i, end=" ")
-    print()
-    return bfs
-
-def find_shortest_path(G: nx.graph, source: int, target: int):
-    path = nx.shortest_path(G, source, target)
-    for i in path:
-        print(i, end=" ")
-    print()
-    return path
-
-def visualize_graph(G: nx.graph):
-    nx.draw(G, with_labels=True, node_color="lightblue", edge_color="gray", node_size=2000, font_size=15)
+def visualize_graph(G: nx.Graph) -> None:
+    nx.draw(G)
     plt.show()
